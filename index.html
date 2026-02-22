@@ -10,7 +10,7 @@
 <div id="msg-scr">
     <div id="next-role-hint"></div>
     <div id="msg-text"></div>
-    <button class="btn b-g" style="width:240px" onclick="closeMsg()">Понятно</button>
+    <button class="btn b-g" style="width:240px; margin-top:20px" onclick="closeMsg()">Понятно</button>
 </div>
 
 <div class="hdr">
@@ -24,7 +24,6 @@
 </div>
 
 <div id="s1" class="s a">
-    <div class="welcome-card"><h3>Добро пожаловать! 🎩</h3><p>Добавьте минимум 3 игрока.</p></div>
     <div id="l1"></div>
     <div class="f-b">
         <button class="btn b-b" onclick="addP()">+ Игрок</button>
@@ -34,7 +33,7 @@
 
 <div id="s2" class="s">
     <div id="lp"></div>
-    <div style="text-align:center;padding:18px;background:#1c1c1e;border-radius:16px;margin-bottom:12px">
+    <div style="text-align:center;padding:18px;background:#1c1c1e;border-radius:16px;margin-bottom:12px; font-size:14px">
         Всего: <b id="totalC">0</b> | Мирных: <b id="citC" style="color:#0a84ff">0</b>
     </div>
     <div class="f-b">
@@ -61,20 +60,21 @@
 
 <div id="s5" class="s">
     <div id="finalResultsPanel"></div>
-    <div style="padding:10px"><h4 style="margin-bottom:10px">Хронология игры 📜</h4></div>
-    <div id="finalLogList" style="background:#1c1c1e; border-radius:16px; padding:12px; margin-bottom:100px"></div>
+    <div style="padding:10px"><h4>Хронология игры 📜</h4></div>
+    <div id="finalLogList" style="background:#1c1c1e; border-radius:16px; padding:16px; margin-bottom:100px; font-size:13px; line-height:1.5"></div>
     <div class="f-b"><button class="btn b-b" onclick="location.reload()">Новая игра</button></div>
 </div>
 
 <div id="log-overlay" class="overlay" onclick="if(event.target===this)toggleLog()">
     <div class="overlay-content">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px">
-            <h3 style="margin:0">История игры 📖</h3>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px">
+            <h3 style="margin:0">Лог событий</h3>
             <button class="del-btn" onclick="toggleLog()" style="font-size:24px">✕</button>
         </div>
         <div id="log-list"></div>
     </div>
 </div>
-<script src="script.js?v=1.4"></script>
+
+<script src="script.js?v=1.5"></script>
 </body>
 </html>
