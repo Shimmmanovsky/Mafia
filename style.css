@@ -1,347 +1,173 @@
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root {
+    --bg-deep: #05070a;
+    --bg-midnight: #0a111a;
+    --card-glass: rgba(255, 255, 255, 0.05);
+    --card-border: rgba(255, 255, 255, 0.1);
+    --accent-blue: #0a84ff;
+    --accent-green: #30d158;
+    --accent-red: #ff453a;
+    --accent-purple: #af52de;
+    --text-main: #ffffff;
+    --text-dim: #8e8e93;
+    --header-h: 64px;
+    --info-h: 58px;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 body {
-    font-family:-apple-system, system-ui, sans-serif;
-    background:#000;
-    color:#fff;
-    margin:0;
-    padding:20px 16px 100px 16px;
-    line-height:1.4;
+    font-family: -apple-system, system-ui, sans-serif;
+    background: radial-gradient(circle at center, var(--bg-midnight) 0%, var(--bg-deep) 100%) fixed;
+    color: var(--text-main);
+    margin: 0;
+    padding: 80px 16px 140px 16px;
+    line-height: 1.4;
 }
 
-.s {display:none}
-.s.a {display:block}
+.s { display: none; }
+.a { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+/* Хедер */
 .hdr {
-    position:fixed;
-    top:0;
-    left:0;
-    right:0;
-    background:rgba(28,28,30,0.95);
-    backdrop-filter:blur(20px);
-    z-index:1000;
-    padding:16px 20px;
-    border-bottom:1px solid #38383a;
+    position: fixed; top: 0; left: 0; right: 0;
+    background: rgba(10, 17, 26, 0.98);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    z-index: 1100;
+    padding: 0 16px; height: var(--header-h);
+    border-bottom: 1px solid var(--card-border);
+    display: flex; flex-direction: column; justify-content: center;
 }
 
-h2 {
-    font-weight:600;
-    font-size:20px;
-    margin:0;
+/* Статичные инфоблоки */
+#nightStatusPanel, #voteStat, #roleLimitInfo {
+    position: relative;
+    z-index: 100;
+    background: var(--card-glass);
+    margin: 0 0 16px 0 !important;
+    padding: 12px 16px !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    min-height: var(--info-h);
+    height: auto;
 }
 
+#nightStatusPanel { flex-direction: column; align-items: center; text-align: center; }
+
+#nightStatusPanel h3, #roleLimitInfo h3 {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+    flex: 1;
+}
+
+#nightStatusPanel p {
+    margin: 4px 0 0 0 !important;
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.2;
+}
+
+#nightStatusPanel:empty, #voteStat:empty, #roleLimitInfo:empty { display: none !important; }
+
+/* Цветовые линии фаз */
+.header-line-Mafia { border-bottom: 3px solid var(--accent-red) !important; }
+.header-line-Doctor { border-bottom: 3px solid var(--accent-green) !important; }
+.header-line-Detective { border-bottom: 3px solid var(--accent-blue) !important; }
+.header-line-Maniac { border-bottom: 3px solid var(--accent-purple) !important; }
+.header-line-Day { border-bottom: 3px solid var(--accent-blue) !important; }
+/* Карточки игроков */
 .r {
-    background:#1c1c1e;
-    border-radius:14px;
-    padding:16px;
-    margin-bottom:12px;
-    display:flex;
-    align-items:center;
-    border:1px solid #38383a;
-    transition: all 0.2s ease;
-    min-height:60px;
-    cursor:pointer;
+    background: var(--card-glass);
+    border-radius: 14px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    border: 1.5px solid transparent;
+    min-height: 64px;
 }
 
-.r:active {
-    background:#2c2c2e;
-    border-color:#0a84ff;
-}
+.p-num { width: 30px; font-weight: bold; color: var(--text-dim); flex-shrink: 0; }
+.p-info { flex: 1; overflow: hidden; display: flex; align-items: center; gap: 8px; }
+.p-name { font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-.p-num {
-    width:32px;
-    font-weight:600;
-    color:#8e8e93;
-    flex-shrink:0;
-    font-size:17px;
+/* Исправленный инпут */
+input {
+    background: none; border: none; color: #fff; font-size: 17px;
+    flex: 1; border-bottom: 1.5px solid var(--card-border); outline: none;
+    padding: 4px 0;
+    margin-right: 12px;
 }
+input:focus { border-bottom-color: var(--accent-blue); }
 
-.p-info {
-    flex:1;
-    padding-left:12px;
-    overflow:hidden;
-}
-
-.p-name {
-    font-size:17px;
-    color:#fff;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
-
-.sel {
-    border-color:#30d158 !important;
-    background:#1c3d25 !important;
-}
-
-.isOut {
-    opacity:0.4;
-    pointer-events:none;
-}
-
-.locked {
-    opacity:0.5;
-    pointer-events:none;
-    border-style:dashed;
-}
-
+/* Кнопки */
 .btn {
-    border:none;
-    border-radius:12px;
-    padding:16px 20px;
-    width:100%;
-    font-weight:600;
-    cursor:pointer;
-    color:#fff;
-    font-size:16px;
-    text-align:center;
-    min-height:52px;
+    border: none; border-radius: 14px; padding: 14px; width: 100%;
+    font-weight: 600; font-size: 16px; color: #fff;
+    display: flex; justify-content: center; align-items: center; min-height: 54px;
 }
-
-.b-b {background:#0a84ff}
-.b-g {background:#30d158}
-.b-o {background:#3c3c3e}
-.b-g:active, .b-b:active, .b-o:active {opacity:0.8}
+.b-b { background: var(--accent-blue); }
+.b-g { background: var(--accent-green); }
+.b-o { background: #2c2c2e; }
 
 .f-b {
-    position:fixed;
-    bottom:0;
-    left:0;
-    right:0;
-    background:rgba(28,28,30,0.95);
-    backdrop-filter:blur(20px);
-    padding:20px;
-    display:flex;
-    gap:12px;
-    border-top:1px solid #38383a;
-    z-index:1000;
-}
-
-input {
-    background:none;
-    border:none;
-    color:#fff;
-    font-size:17px;
-    flex:1;
-    border-bottom:1px solid #38383a;
-    outline:none;
-    padding:4px 0;
-}
-
-input:focus {
-    border-bottom-color:#0a84ff;
-}
-
-.del-btn {
-    background:#3c3c3e;
-    border:none;
-    color:#ff3b30;
-    font-weight:600;
-    cursor:pointer;
-    padding:8px 12px;
-    border-radius:10px;
-    font-size:16px;
-    width:36px;
-    height:36px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.tag {
-    font-size:11px;
-    padding:4px 10px;
-    border-radius:8px;
-    text-transform:uppercase;
-    font-weight:700;
-    margin-left:8px;
-}
-
-.tag-Mafia {background:#ff453a;color:#fff}
-.tag-Detective {background:#30d158;color:#fff}
-.tag-Citizen {background:#8e8e93;color:#fff}
-.tag-Doctor {background:#5e5ce6;color:#fff}
-.tag-Maniac {background:#af52de;color:#fff}
-
-.v-wrap {
-    display:flex;
-    align-items:center;
-    gap:8px;
-    margin-left:auto;
-}
-
-.v-btn {
-    width:36px;
-    height:36px;
-    background:#0a84ff;
-    border-radius:8px;
-    border:none;
-    color:#fff;
-    font-weight:600;
-    font-size:18px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.v-cnt {
-    background:#1c1c1e;
-    border:1px solid #38383a;
-    width:36px;
-    height:36px;
-    border-radius:8px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight:600;
-    font-size:15px;
-}
-
-#msg-scr {
-    display:none;
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.9);
-    z-index:2000;
-    padding:60px 24px;
-    text-align:center;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-}
-
-#msg-text {
-    font-size:18px;
-    margin-bottom:32px;
-    max-width:90%;
-    line-height:1.4;
-}
-
-#next-role-hint {
-    font-size:14px;
-    color:#0a84ff;
-    text-transform:uppercase;
-    font-weight:700;
-    margin-bottom:16px;
-}
-
-.welcome-card {
-    background:#1c1c1e;
-    border-radius:16px;
-    padding:20px;
-    margin-bottom:20px;
-    border:1px solid #38383a;
-}
-
-.welcome-card h3 {
-    margin:0 0 16px 0;
-    font-size:18px;
-    font-weight:600;
-}
-
-.welcome-card ul {
-    margin:0;
-    padding-left:20px;
-    font-size:15px;
-    color:#8e8e93;
-}
-
-.welcome-card li {
-    margin-bottom:8px;
-}
-
-.reset-link {
-    background:none;
-    border:1px solid #ff3b30;
-    color:#ff3b30;
-    padding:8px 16px;
-    border-radius:10px;
-    font-size:14px;
-    font-weight:600;
-}
-
-.overlay {
-    display:none;
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.8);
-    z-index:3000;
-    padding:20px;
-}
-
-.overlay-content {
-    max-width:500px;
-    margin:60px auto 0;
-    background:#1c1c1e;
-    border-radius:20px;
-    border:1px solid #38383a;
-    height:70vh;
-    overflow-y:auto;
-}
-
-.close-btn {
-    background:none;
-    border:none;
-    color:#8e8e93;
-    font-size:24px;
-    cursor:pointer;
-    padding:8px;
-}
-
-.log-item {
-    padding:16px;
-    border-bottom:1px solid #38383a;
-    font-size:14px;
-}
-
-.stats-bar {
-    text-align:center;
-    padding:20px;
-    background:#1c1c1e;
-    border-radius:14px;
-    margin-bottom:20px;
-    border:1px solid #38383a;
-    font-size:16px;
-}
-
-.role-header-card {
-    background:#1c1c1e;
-    border:2px solid #0a84ff;
-    border-radius:16px;
-    padding:24px;
-    margin-bottom:20px;
-    text-align:center;
-}
-
-.role-header-card h3 {
-    margin:0 0 12px 0;
-    font-size:20px;
-    font-weight:600;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: rgba(10, 17, 26, 0.95);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    padding: 16px 16px 34px 16px;
+    display: flex; gap: 10px;
+    border-top: 1px solid var(--card-border);
+    z-index: 1100;
 }
 
 .role-count-badge {
-    display:inline-block;
-    background:rgba(10,132,255,0.2);
-    color:#0a84ff;
-    padding:6px 16px;
-    border-radius:20px;
-    font-weight:700;
-    font-size:15px;
-    border:1px solid rgba(10,132,255,0.3);
+    display: inline-block;
+    background: rgba(10, 132, 255, 0.15);
+    color: var(--accent-blue);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 800;
+    font-size: 13px;
+    flex-shrink: 0;
 }
 
-#finalLogList {
-    background:#1c1c1e;
-    border-radius:16px;
-    padding:20px;
-    margin:0 16px 100px 16px;
-    max-height:50vh;
-    overflow-y:auto;
-}
+/* Остальные стили (Тэги, Логи, Модалки) */
+.tag { font-size: 10px; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; font-weight: 800; }
+.tag-Mafia { background: var(--accent-red); }
+.tag-Doctor { background: var(--accent-green); }
+.tag-Detective { background: var(--accent-blue); }
+.tag-Maniac { background: var(--accent-purple); }
+.tag-Citizen { background: var(--text-dim); }
+.tag-right { margin-left: auto; flex-shrink: 0; }
+
+.welcome-card { background: var(--card-glass); border-radius: 16px; padding: 16px; margin-bottom: 16px; border: 1px solid var(--card-border); }
+
+#msg-scr { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 3000; padding: 20px; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+#msg-text { font-size: 18px; margin-bottom: 30px; max-width: 320px; line-height: 1.5; }
+#next-role-hint { font-size: 14px; color: var(--accent-blue); font-weight: 700; margin-bottom: 8px; text-transform: uppercase; }
+
+.overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 4000; }
+.overlay-content { max-width: 500px; margin: 50px auto; background: var(--bg-deep); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px; height: 80vh; overflow-y: auto; }
+
+.v-wrap { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-shrink: 0; }
+.v-btn { width: 36px; height: 36px; background: var(--accent-blue); border-radius: 10px; border: none; color: #fff; font-size: 20px; font-weight: bold; }
+.v-cnt { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); min-width: 34px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-weight: 600; }
+
+.del-btn { background: #2c2c2e; border: none; color: var(--accent-red); padding: 8px 12px; border-radius: 10px; font-weight: bold; }
+.reset-link { background: none; border: 1px solid var(--accent-red); color: var(--accent-red); padding: 6px 12px; border-radius: 8px; font-size: 12px; }
+
+.sel-Mafia { border-color: var(--accent-red) !important; background: rgba(255, 69, 58, 0.1) !important; }
+.sel-Doctor { border-color: var(--accent-green) !important; background: rgba(48, 209, 88, 0.1) !important; }
+.sel-Detective { border-color: var(--accent-blue) !important; background: rgba(10, 132, 255, 0.1) !important; }
+.sel-Maniac { border-color: var(--accent-purple) !important; background: rgba(175, 82, 222, 0.1) !important; }
+.sel-Day { border-color: var(--accent-blue) !important; background: rgba(10, 132, 255, 0.1) !important; }
+
+.isOut { opacity: 0.3 !important; filter: grayscale(1); pointer-events: none; }
+.locked { opacity: 0.5; pointer-events: none; border: 1px dashed #444; }
